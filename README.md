@@ -10,7 +10,7 @@
 * Mybatis 3.4.4
 * Eclipse IDE version 2019-12(4.14.0)
 
-### How to perform
+### Before starting
 * Before starting development, change the version of Spring, JDK, Maven-compiler at the **[pom.xml]** file. And, change the source and target about Maven-complier.
 ```xml
 <properties>
@@ -74,3 +74,67 @@
 <context:component-scan
         base-package="com.devfun.service"></context:component-scan>
 ```
+### Classes organization
+* MovieDAO.java
+	+ It is a interface made up of a function contains List\<MoiveVO\>.
+	```java
+	public interface MovieDAO {   
+    	public List<MovieVO> selectMovie() throws Exception;
+	}
+	```
+* MovieDAOImpl.java
+	+ Excute SQL query registered by SqlSession. And return List\<MoiveVO\>.
+	```java
+	public List<MovieVO> selectMovie() throws Exception {
+		return sqlSession.selectList(Namespace+".selectMovie");
+    }
+	```
+	+ After writing **MovieDAOImpl.java**, register dao in **root-context.xml** file.
+	```xml
+	<context:component-scan
+        	base-package="com.devfun.dao"></context:component-scan>
+	```
+* MovieService.java
+	+ You can use this interface when you process DB and write some business logic
+	+ It is also a interface made up of a function contains List\<MoiveVO\>.
+	```java
+	public interface MovieService {   
+    	public List<MovieVO> selectMovie() throws Exception;
+	}
+	```
+* MovieServiceImpl.java
+	+ After writing **MovieServiceImpl.java**, register dao in **root-context.xml** file.
+	```xml
+	<context:component-scan
+        	base-package="com.devfun.service"></context:component-scan>
+	```
+* HomeController.java
+	+ 'value' property of RequestMapping is a path of url to invoke.
+	```java
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	```
+	+ By calling selectMovie function from 'service', you can get contents. And It is sent to 'model' object (it is Model class object). By using the return statement, you can send contents stored in 'model'.
+	```java
+	public String home(Locale locale, Model model) throws Exception{
+ 
+        logger.info("home");
+        
+        List<MovieVO> movieList = service.selectMovie();
+        
+        model.addAttribute("movieList", movieList);
+ 
+        return "home";
+    }
+	```
+	+ '**return "home";**' means sending 'model' stored contents to the view called **home.jsp**. If you want to set this calling information, you shuold change **servlet-context.xml** file like below. 
+	(servlet-context.xml is located in "src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml".)
+	```xml
+	 <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <beans:property name="prefix" value="/WEB-INF/views/" />
+        <beans:property name="suffix" value=".jsp" />
+    </beans:bean>
+	```
+
+### JSP file
+* home.jsp
+	+ By using \<c:forEach\>, you can look up data from DB. For using  \<c:forEach\>, you should use JSTL.
