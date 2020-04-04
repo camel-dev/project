@@ -11,7 +11,7 @@
 * Eclipse IDE version 2019-12(4.14.0)
 
 ### How to perform
-* Before starting development, I changed the version of Spring, JDK, Maven-compiler at the **[pom.xml]** file. And I also changed the source and target about Maven-complier.
+* Before starting development, change the version of Spring, JDK, Maven-compiler at the **[pom.xml]** file. And, change the source and target about Maven-complier.
 ```xml
 <properties>
 		<java-version>1.8</java-version>
@@ -38,7 +38,7 @@
         </plugins>
 </build>
 ```
-* For setting non-web part, I changed contents of the root-context.xml file 
+* For setting non-web part, change contents of the root-context.xml file 
 ```xml
 <bean id="dataSource" 
         class="org.springframework.jdbc.datasource.DriverManagerDataSource">
