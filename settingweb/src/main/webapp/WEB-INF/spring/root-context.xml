@@ -15,7 +15,7 @@
         <property name="url"
             value="jdbc:log4jdbc:mariadb://127.0.0.1:3308/theater" />
         <property name="username" value="root" />
-        <property name="password" value="1300andk!@" />
+        <property name="password" value="password" />
     </bean>
  
  
